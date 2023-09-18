@@ -15,6 +15,16 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/tienle2048/react-native-awesome-library.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
+  
+
+  s.dependency "BIP39"
+  s.dependency "TweetNacl"
+  # s.dependency "TrezorCrypto" , '0.0.6'
+  s.dependency "TrustWalletCore"
+  # s.dependency 'BitcoinCore.swift'
+  # s.dependency 'BitcoinKit.swift'
+  # s.dependency 'BitcoinCashKit.swift'
+  # s.dependency 'DashKit.swift'
 
   # Use install_modules_dependencies helper to install the dependencies if React Native version >=0.71.0.
   # See https://github.com/facebook/react-native/blob/febf6b7f33fdb4904669f99d795eba4c0f95d7bf/scripts/cocoapods/new_architecture.rb#L79.

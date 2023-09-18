@@ -1,3 +1,5 @@
+// import TrustWalletCore
+
 @objc(AwesomeLibrary)
 class AwesomeLibrary: NSObject {
 
