@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
 
-  s.platforms    = { :ios => "11.0" }
+  s.platforms    = { :ios => "14.0" }
   s.source       = { :git => "https://github.com/tienle2048/react-native-awesome-library.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
@@ -19,9 +19,14 @@ Pod::Spec.new do |s|
 
   s.dependency "BIP39"
   s.dependency "TweetNacl"
-  # s.dependency "TrezorCrypto" , '0.0.6'
+  # s.dependency "TrezorCrypto" 
   s.dependency "TrustWalletCore"
-  # s.dependency 'BitcoinCore.swift'
+  s.dependency "Ed25519HDKeySwift"
+  # s.dependency 'LibWally', :git => 'https://github.com/Sjors/LibWally-Swift.git', :tag => 'v0.0.3', :submodules => true
+  # s.dependency "HdWalletKit.swift"
+  # s.dependency "HDWalletKit"
+
+  # s.dependency 'LibWally'
   # s.dependency 'BitcoinKit.swift'
   # s.dependency 'BitcoinCashKit.swift'
   # s.dependency 'DashKit.swift'

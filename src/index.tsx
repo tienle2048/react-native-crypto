@@ -9,14 +9,21 @@ const LINKING_ERROR =
 const AwesomeLibrary = NativeModules.AwesomeLibrary
   ? NativeModules.AwesomeLibrary
   : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
-      }
-    );
+    {},
+    {
+      get() {
+        throw new Error(LINKING_ERROR);
+      },
+    }
+  );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return AwesomeLibrary.multiply(a, b);
+const algo = {
+  hdkey: "hdkey",
+  nacl: 'nacl'
+}
+
+export function generateMasterKey(type: string, mnemonic: string, path: string): Promise<string> {
+  if (algo.hdkey ===type) return AwesomeLibrary.hdkey(mnemonic, path);
+  if (algo.nacl ===type) return AwesomeLibrary.nacl(mnemonic, path);
+  return AwesomeLibrary.hdkey(mnemonic, path);
 }
