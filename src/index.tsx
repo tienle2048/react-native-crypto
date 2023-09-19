@@ -23,7 +23,7 @@ interface KeyPair {
 }
 
 enum Algo {
-  hdkey = "hdkey",
+  hdkey = "hd",
   nacl = 'nacl'
 }
 
