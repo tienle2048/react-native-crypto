@@ -17,13 +17,28 @@ const AwesomeLibrary = NativeModules.AwesomeLibrary
     }
   );
 
-const algo = {
-  hdkey: "hdkey",
-  nacl: 'nacl'
+interface KeyPair {
+  privateKey: number[]
+  publicKey: number[]
 }
 
-export function generateMasterKey(type: string, mnemonic: string, path: string): Promise<string> {
-  if (algo.hdkey ===type) return AwesomeLibrary.hdkey(mnemonic, path);
-  if (algo.nacl ===type) return AwesomeLibrary.nacl(mnemonic, path);
-  return AwesomeLibrary.hdkey(mnemonic, path);
+enum Algo {
+  hdkey = "hdkey",
+  nacl = 'nacl'
+}
+
+export async function generateMasterKey(type: Algo, mnemonic: string, path: string): Promise<KeyPair> {
+  if (Algo.hdkey === type) {
+    const masterSeedHd = await AwesomeLibrary.hdkey(mnemonic, path);
+    return {
+      privateKey: masterSeedHd[1],
+      publicKey: masterSeedHd[0]
+    }
+  }
+  // nacl
+  const masterSeedNacl = await AwesomeLibrary.nacl(mnemonic, path);
+  return {
+    privateKey: masterSeedNacl[1],
+    publicKey: masterSeedNacl[0]
+  }
 }
