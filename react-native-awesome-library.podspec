@@ -22,6 +22,8 @@ Pod::Spec.new do |s|
   # s.dependency "TrezorCrypto" 
   s.dependency "TrustWalletCore"
   s.dependency "Ed25519HDKeySwift"
+  s.dependency "Sr25519/Sr25519"
+  s.dependency "CryptoSwift"
   # s.dependency 'LibWally', :git => 'https://github.com/Sjors/LibWally-Swift.git', :tag => 'v0.0.3', :submodules => true
   # s.dependency "HdWalletKit.swift"
   # s.dependency "HDWalletKit"

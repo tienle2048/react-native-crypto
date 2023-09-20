@@ -24,12 +24,20 @@ interface KeyPair {
 
 enum Algo {
   hdkey = "hd",
-  nacl = 'nacl'
+  nacl = 'nacl',
+  polkadot = "polkadot"
 }
 
 export async function generateMasterKey(type: Algo, mnemonic: string, path: string): Promise<KeyPair> {
   if (Algo.hdkey === type) {
     const masterSeedHd = await AwesomeLibrary.hdkey(mnemonic, path);
+    return {
+      privateKey: masterSeedHd[1],
+      publicKey: masterSeedHd[0]
+    }
+  }
+  if (Algo.polkadot === type) {
+    const masterSeedHd = await AwesomeLibrary.polkadot(mnemonic, path);
     return {
       privateKey: masterSeedHd[1],
       publicKey: masterSeedHd[0]

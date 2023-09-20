@@ -9,6 +9,10 @@ RCT_EXTERN_METHOD(hdkey:(NSString)a withB:(NSString)b
 RCT_EXTERN_METHOD(nacl:(NSString)a withB:(NSString)b
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
+        
+RCT_EXTERN_METHOD(polkadot:(NSString)a withB:(NSString)b
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
 
 + (BOOL)requiresMainQueueSetup
 {
