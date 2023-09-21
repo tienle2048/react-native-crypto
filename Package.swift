@@ -21,7 +21,7 @@ let package = Package(
         .Package(url: "https://github.com/bitmark-inc/tweetnacl-swiftwrap.git", majorVersion: 1),
         .package(url: "https://github.com/p2p-org/Ed25519HDKeySwift.git", .branchItem("master")),
         .package(url: "https://github.com/tesseract-one/Sr25519.swift.git", from: "0.2.0"),
-        .package(url: "https://github.com/liujunliuhong/Crypto-Swift.git", .branchItem("master"))
+        // .package(url: "https://github.com/liujunliuhong/Crypto-Swift.git", .branchItem("master"))
     ],
     
 )

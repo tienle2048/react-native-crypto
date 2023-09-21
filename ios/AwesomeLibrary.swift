@@ -1,7 +1,6 @@
 import WalletCore
 import TweetNacl
 import Ed25519HDKeySwift
-import Crypto_Swift
 import Sr25519
 import CommonCrypto
 
@@ -40,7 +39,6 @@ class AwesomeLibrary: NSObject {
     
     
     func PBKDF2_SHA512(input: Array<UInt8>, salt: Array<UInt8>, iterationsCount: UInt32, dkLen: Int) -> Data? {
-        
         var inputData = input.map(Int8.init)
         var saltBytes = salt
         
@@ -51,7 +49,7 @@ class AwesomeLibrary: NSObject {
                                          inputData.count,
                                          &saltBytes,
                                          saltBytes.count,
-                                         CCPseudoRandomAlgorithm(Crypto.PBKDF2.AlgorithmType.sha512.algorithmType()),
+                                         5,
                                          iterationsCount,
                                          &result,
                                          result.count)
