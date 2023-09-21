@@ -3,7 +3,9 @@ import BIP39
 import TweetNacl
 import Ed25519HDKeySwift
 import CryptoSwift
+import Crypto_Swift
 import Sr25519
+import CommonCrypto
 
 
 @objc(AwesomeLibrary)
@@ -37,13 +39,42 @@ class AwesomeLibrary: NSObject {
           resolve(["",""])
       }
   }
+    
+    
+    func PBKDF2_SHA512(input: Array<UInt8>, salt: Array<UInt8>, iterationsCount: UInt32, dkLen: Int) -> Data? {
+        
+        var inputData = input.map(Int8.init)
+        var saltBytes = salt
+        
+        var result: [UInt8] = Array<UInt8>(repeating: 0, count: dkLen)
+        
+        let error = CCKeyDerivationPBKDF(CCPBKDFAlgorithm(kCCPBKDF2),
+                                         &inputData,
+                                         inputData.count,
+                                         &saltBytes,
+                                         saltBytes.count,
+                                         CCPseudoRandomAlgorithm(Crypto.PBKDF2.AlgorithmType.sha512.algorithmType()),
+                                         iterationsCount,
+                                         &result,
+                                         result.count)
+        if error == kCCSuccess {
+            return Data(result)
+        }
+        
+        return nil
+    }
 
   @objc(polkadot:withB:withResolver:withRejecter:)
     func polkadot(mnemonicString: String, path: String, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
         do{
-            let entropy = HDWallet(mnemonic: mnemonicString, passphrase: "")?.entropy.bytes
+            let entropy: Array<UInt8> = HDWallet(mnemonic: mnemonicString, passphrase: "")!.entropy.bytes
+            
             let salt: Array<UInt8> = [109, 110, 101, 109, 111, 110, 105, 99]
-            let miniSeed = try PKCS5.PBKDF2(password: entropy!, salt: salt, iterations: 2048, keyLength: 64, variant: .sha512).calculate()[0...31]
+            print("dadwwdw1")
+            print(entropy)
+            
+            let miniSeed = PBKDF2_SHA512(input: entropy, salt: salt, iterationsCount: 2048, dkLen: 32)!
+            
             let sr25519Seed = try Sr25519Seed(raw: Data(miniSeed))
             let publicKey = Sr25519KeyPair(seed: sr25519Seed).publicKey.raw.bytes
             resolve([publicKey,""])
@@ -51,4 +82,4 @@ class AwesomeLibrary: NSObject {
             resolve(["",""])
         }
     }
-}
+    }
