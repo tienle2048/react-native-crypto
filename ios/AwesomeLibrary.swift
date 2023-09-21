@@ -1,8 +1,6 @@
 import WalletCore
-import BIP39
 import TweetNacl
 import Ed25519HDKeySwift
-import CryptoSwift
 import Crypto_Swift
 import Sr25519
 import CommonCrypto
@@ -68,13 +66,8 @@ class AwesomeLibrary: NSObject {
     func polkadot(mnemonicString: String, path: String, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
         do{
             let entropy: Array<UInt8> = HDWallet(mnemonic: mnemonicString, passphrase: "")!.entropy.bytes
-            
             let salt: Array<UInt8> = [109, 110, 101, 109, 111, 110, 105, 99]
-            print("dadwwdw1")
-            print(entropy)
-            
             let miniSeed = PBKDF2_SHA512(input: entropy, salt: salt, iterationsCount: 2048, dkLen: 32)!
-            
             let sr25519Seed = try Sr25519Seed(raw: Data(miniSeed))
             let publicKey = Sr25519KeyPair(seed: sr25519Seed).publicKey.raw.bytes
             resolve([publicKey,""])

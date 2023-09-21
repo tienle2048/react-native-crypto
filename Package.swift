@@ -21,12 +21,7 @@ let package = Package(
         .Package(url: "https://github.com/bitmark-inc/tweetnacl-swiftwrap.git", majorVersion: 1),
         .package(url: "https://github.com/p2p-org/Ed25519HDKeySwift.git", .branchItem("master")),
         .package(url: "https://github.com/tesseract-one/Sr25519.swift.git", from: "0.2.0"),
-        .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.7.1")),
-        .package(url: "https://github.com/liujunliuhong/Crypto-Swift.git", .branchItem("master")),
-        // .package(url: "https://github.com/essentiaone/HDWallet.git", .branchItem("master")),
-        // .Package(url: "https://github.com/horizontalsystems/hd-wallet-kit-ios.git", .branchItem("master")),
-        // .package(name: "HdWalletKit", url: "https://github.com/horizontalsystems/HdWalletKit.Swift.git", .upToNextMajor(from: "1.0.0"))
-        // .Package(url: "https://github.com/Sjors/libwally-swift.git", .branchItem("master")),
+        .package(url: "https://github.com/liujunliuhong/Crypto-Swift.git", .branchItem("master"))
     ],
     
 )
