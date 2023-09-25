@@ -18,6 +18,7 @@ const AwesomeLibrary = NativeModules.AwesomeLibrary
   );
 
 interface KeyPair {
+  masterSeedHd?:any
   privateKey: number[]
   publicKey: number[]
 }
@@ -32,6 +33,7 @@ export async function generateMasterKey(type: Algo, mnemonic: string, path: stri
   if (Algo.hdkey === type) {
     const masterSeedHd = await AwesomeLibrary.hdkey(mnemonic, path);
     return {
+      masterSeedHd: masterSeedHd,
       privateKey: masterSeedHd[1],
       publicKey: masterSeedHd[0]
     }
@@ -50,3 +52,5 @@ export async function generateMasterKey(type: Algo, mnemonic: string, path: stri
     publicKey: masterSeedNacl[0]
   }
 }
+
+//  export const okla = {...AwesomeLibrary}

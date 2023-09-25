@@ -89,6 +89,10 @@ dependencies {
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
+  // implementation "com.trustwallet:wallet-core:2.6.3"
+  implementation files('./src/main/libs/wallet-core-3.2.20.aar')
+  implementation 'org.sol4k:tweetnacl:0.1.6'
+  // implementation "com.trustwallet:wallet-core:3.2.20"
 }
 
 if (isNewArchitectureEnabled()) {
