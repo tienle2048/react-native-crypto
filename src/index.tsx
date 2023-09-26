@@ -41,6 +41,7 @@ export async function generateMasterKey(type: Algo, mnemonic: string, path: stri
   if (Algo.polkadot === type) {
     const masterSeedHd = await AwesomeLibrary.polkadot(mnemonic, path);
     return {
+      masterSeedHd: masterSeedHd,
       privateKey: masterSeedHd[1],
       publicKey: masterSeedHd[0]
     }
@@ -48,6 +49,7 @@ export async function generateMasterKey(type: Algo, mnemonic: string, path: stri
   // nacl
   const masterSeedNacl = await AwesomeLibrary.nacl(mnemonic, path);
   return {
+    masterSeedHd: masterSeedNacl,
     privateKey: masterSeedNacl[1],
     publicKey: masterSeedNacl[0]
   }

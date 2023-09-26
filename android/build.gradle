@@ -92,6 +92,11 @@ dependencies {
   // implementation "com.trustwallet:wallet-core:2.6.3"
   implementation files('./src/main/libs/wallet-core-3.2.20.aar')
   implementation 'org.sol4k:tweetnacl:0.1.6'
+  implementation files('./src/main/libs/crypto-key-ed25519-0.4.0.jar')
+  implementation files('./src/main/libs/bcprov-jdk15on-1.70.0.wso2v1.jar')
+  implementation files('./src/main/libs/sr25519-kotlin-1.0.0.jar')
+  implementation files('./src/main/libs/common-kotlin-1.0.0.jar')
+  
   // implementation "com.trustwallet:wallet-core:3.2.20"
 }
 

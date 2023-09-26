@@ -10,11 +10,23 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableNativeArray;
+import com.facebook.react.common.ArrayUtils;
 import com.facebook.react.module.annotations.ReactModule;
 import wallet.core.jni.HDWallet;
 import wallet.core.jni.CoinType;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.PublicKeyType;
+import wallet.core.jni.PBKDF2;
+//import wallet.core.jni.PrivateKey
+
+import org.sol4k.tweetnacl.TweetNacl;
+
+import dev.sublab.sr25519.KeyPair;
+
+
+
+import java.util.Arrays;
+
 @ReactModule(name = AwesomeLibraryModule.NAME)
 public class AwesomeLibraryModule extends ReactContextBaseJavaModule {
   public static final String NAME = "AwesomeLibrary";
@@ -59,11 +71,44 @@ public class AwesomeLibraryModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void nacl(String mnemonic , String path, Promise promise) {
     var wallet = new HDWallet(mnemonic, "");
-    promise.resolve(1);
+    byte[] publicKeyBase64;
+    byte[] privateKeyBase64;
+    if(path.equals("m")){
+      byte[] seed = Arrays.copyOfRange(wallet.seed(),0,32);
+      TweetNacl.Signature.KeyPair keyPair = TweetNacl.Signature.keyPair_fromSeed(seed);
+      publicKeyBase64 = keyPair.getPublicKey();
+      privateKeyBase64 = keyPair.getSecretKey();
+    }
+    else {
+      PrivateKey key = wallet.getKey(CoinType.SOLANA , path);
+      publicKeyBase64 = key.getPublicKeyEd25519().data();
+      byte[] privateKey32Byte = key.data();
+      int length = privateKey32Byte.length + publicKeyBase64.length;
+      byte[] result = new byte[length];
+      System.arraycopy(publicKeyBase64, 0, result, 0, privateKey32Byte.length);
+      System.arraycopy(privateKey32Byte, 0, result, privateKey32Byte.length, publicKeyBase64.length);
+      privateKeyBase64 = result;
+    }
+    String result = convertByteArrayToString(publicKeyBase64,privateKeyBase64);
+    promise.resolve(result);
   }
 
   @ReactMethod
   public void polkadot(String mnemonic , String path, Promise promise) {
-    promise.resolve(1);
+    var entropy = new HDWallet(mnemonic, "").entropy();
+    byte[] salt = new byte[]{109, 110, 101, 109, 111, 110, 105, 99};
+    byte[] miniSeed = PBKDF2.hmacSha512(entropy,salt,2048,32);
+
+    try {
+      KeyPair keypair = KeyPair.Companion.fromByteArray(miniSeed);
+      Log.d("okla", convertByteArrayToString(keypair.toByteArray(),keypair.toByteArray()));
+      byte[] publicKeyBase64 = keypair.getPublicKey().toByteArray();
+      byte[] privateKeyBase64 = keypair.getSecretKey().toByteArray();
+      String result = convertByteArrayToString(publicKeyBase64,privateKeyBase64);
+
+      promise.resolve(result);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 }
