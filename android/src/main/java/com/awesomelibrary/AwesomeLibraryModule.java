@@ -17,13 +17,11 @@ import wallet.core.jni.CoinType;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.PublicKeyType;
 import wallet.core.jni.PBKDF2;
-//import wallet.core.jni.PrivateKey
 
 import org.sol4k.tweetnacl.TweetNacl;
 
-import dev.sublab.sr25519.KeyPair;
-
-
+import com.sr25519.schnorrkel.sign.ExpansionMode;
+import com.sr25519.schnorrkel.sign.KeyPair;
 
 import java.util.Arrays;
 
@@ -99,16 +97,10 @@ public class AwesomeLibraryModule extends ReactContextBaseJavaModule {
     byte[] salt = new byte[]{109, 110, 101, 109, 111, 110, 105, 99};
     byte[] miniSeed = PBKDF2.hmacSha512(entropy,salt,2048,32);
 
-    try {
-      KeyPair keypair = KeyPair.Companion.fromByteArray(miniSeed);
-      Log.d("okla", convertByteArrayToString(keypair.toByteArray(),keypair.toByteArray()));
-      byte[] publicKeyBase64 = keypair.getPublicKey().toByteArray();
-      byte[] privateKeyBase64 = keypair.getSecretKey().toByteArray();
-      String result = convertByteArrayToString(publicKeyBase64,privateKeyBase64);
-
-      promise.resolve(result);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+    KeyPair keyPair = KeyPair.fromSecretSeed(miniSeed, ExpansionMode.Ed25519);
+    byte[] privateKey = keyPair.getPrivateKey().getKey();
+    byte[] publicKey = keyPair.getPublicKey().toPublicKey();
+    String result = convertByteArrayToString(publicKey,privateKey);
+    promise.resolve(result);
   }
 }
