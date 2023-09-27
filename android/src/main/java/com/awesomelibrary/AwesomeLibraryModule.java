@@ -49,10 +49,10 @@ public class AwesomeLibraryModule extends ReactContextBaseJavaModule {
   String convertByteArrayToString(byte[] publicKeyBase64, byte[] privateKeyBase64){
     String publicKeyString = "";
     String privateKeyString = "";
-    for (var i = 0; i < publicKeyBase64.length; i++) {
+    for (int i = 0; i < publicKeyBase64.length; i++) {
       publicKeyString += String.valueOf(publicKeyBase64[i] & 0xff) + " ";
     }
-    for (var i = 0; i < privateKeyBase64.length; i++) {
+    for (int i = 0; i < privateKeyBase64.length; i++) {
       privateKeyString += " " + String.valueOf(privateKeyBase64[i] & 0xff);
     }
     return publicKeyString + privateKeyString;
@@ -66,7 +66,7 @@ public class AwesomeLibraryModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void hdkey(String mnemonic , String path, Promise promise) {
-    var wallet = new HDWallet(mnemonic, "");
+    HDWallet wallet = new HDWallet(mnemonic, "");
     PrivateKey key = wallet.getKey(CoinType.ETHEREUM , path);
     byte[] publicKeyBase64 = key.getPublicKeyByType(PublicKeyType.SECP256K1).data();
     byte[] privateKeyBase64 = key.data();
@@ -76,7 +76,7 @@ public class AwesomeLibraryModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void nacl(String mnemonic , String path, Promise promise) {
-    var wallet = new HDWallet(mnemonic, "");
+    HDWallet wallet = new HDWallet(mnemonic, "");
     byte[] publicKeyBase64;
     byte[] privateKeyBase64;
     if(path.equals("m")){
@@ -101,7 +101,7 @@ public class AwesomeLibraryModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void polkadot(String mnemonic , String path, Promise promise) {
-    var entropy = new HDWallet(mnemonic, "").entropy();
+    byte[] entropy = new HDWallet(mnemonic, "").entropy();
     byte[] salt = new byte[]{109, 110, 101, 109, 111, 110, 105, 99};
     byte[] miniSeed = PBKDF2.hmacSha512(entropy,salt,2048,32);
 
