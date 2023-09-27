@@ -18,5 +18,9 @@ RCT_EXTERN_METHOD(polkadot:(NSString)a withB:(NSString)b
 {
   return NO;
 }
+- (NSDictionary *)constantsToExport
+{
+ return @{ @"ENVIRONMENT": @"IOS" };
+}
 
 @end
