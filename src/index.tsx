@@ -70,5 +70,3 @@ export async function generateMasterKey(type: Algo, mnemonic: string, path: stri
   const masterSeedNacl = await AwesomeLibrary.nacl(mnemonic, path);
   return formatData(masterSeedNacl)
 }
-
- export const okla = {...AwesomeLibrary}
