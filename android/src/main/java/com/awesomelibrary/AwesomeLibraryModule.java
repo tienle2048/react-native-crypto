@@ -24,6 +24,8 @@ import com.sr25519.schnorrkel.sign.ExpansionMode;
 import com.sr25519.schnorrkel.sign.KeyPair;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @ReactModule(name = AwesomeLibraryModule.NAME)
 public class AwesomeLibraryModule extends ReactContextBaseJavaModule {
@@ -54,6 +56,12 @@ public class AwesomeLibraryModule extends ReactContextBaseJavaModule {
       privateKeyString += " " + String.valueOf(privateKeyBase64[i] & 0xff);
     }
     return publicKeyString + privateKeyString;
+  }
+
+  public Map<String, Object> getConstants() {
+    final Map<String, Object> constants = new HashMap<>();
+    constants.put("ENVIRONMENT", "ANDROID");
+    return constants;
   }
 
   @ReactMethod

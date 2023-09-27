@@ -18,10 +18,11 @@ const AwesomeLibrary = NativeModules.AwesomeLibrary
   );
 
 interface KeyPair {
-  masterSeedHd?:any
   privateKey: number[]
   publicKey: number[]
 }
+
+type Data = String | number[][]
 
 enum Algo {
   hdkey = "hd",
@@ -29,30 +30,45 @@ enum Algo {
   polkadot = "polkadot"
 }
 
-export async function generateMasterKey(type: Algo, mnemonic: string, path: string): Promise<KeyPair> {
-  if (Algo.hdkey === type) {
-    const masterSeedHd = await AwesomeLibrary.hdkey(mnemonic, path);
+enum Env {
+  android = "ANDROID",
+  ios = "IOS"
+}
+
+const constant = {
+  env: "ENVIRONMENT"
+}
+
+const enviroment = AwesomeLibrary.getConstants()
+
+const formatData = (data: Data)=>{
+  if(enviroment[constant.env] === Env.android){
+    const [publicKeyString, privateKeyString] = (data as String).split('  ')
+    const [publicKey, privateKey] = [(publicKeyString as String).split(' '), (privateKeyString as String).split(' ')]
     return {
-      masterSeedHd: masterSeedHd,
-      privateKey: masterSeedHd[1],
-      publicKey: masterSeedHd[0]
+      privateKey: privateKey.map(item=>parseInt(item)) ,
+      publicKey: publicKey.map(item=>parseInt(item))
     }
   }
-  if (Algo.polkadot === type) {
-    const masterSeedHd = await AwesomeLibrary.polkadot(mnemonic, path);
-    return {
-      masterSeedHd: masterSeedHd,
-      privateKey: masterSeedHd[1],
-      publicKey: masterSeedHd[0]
-    }
-  }
-  // nacl
-  const masterSeedNacl = await AwesomeLibrary.nacl(mnemonic, path);
   return {
-    masterSeedHd: masterSeedNacl,
-    privateKey: masterSeedNacl[1],
-    publicKey: masterSeedNacl[0]
+    privateKey: data[1] as number[],
+    publicKey: data[0] as number[]
   }
 }
 
-//  export const okla = {...AwesomeLibrary}
+
+export async function generateMasterKey(type: Algo, mnemonic: string, path: string): Promise<KeyPair> {
+  if (Algo.hdkey === type) {
+    const masterSeedHd: Data = await AwesomeLibrary.hdkey(mnemonic, path);
+    return formatData(masterSeedHd)
+  }
+  if (Algo.polkadot === type) {
+    const masterSeedPolkadot = await AwesomeLibrary.polkadot(mnemonic, path);
+    return formatData(masterSeedPolkadot)
+  }
+  // nacl
+  const masterSeedNacl = await AwesomeLibrary.nacl(mnemonic, path);
+  return formatData(masterSeedNacl)
+}
+
+ export const okla = {...AwesomeLibrary}
