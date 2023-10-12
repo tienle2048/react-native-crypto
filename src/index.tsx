@@ -70,3 +70,8 @@ export async function generateMasterKey(type: Algo, mnemonic: string, path: stri
   const masterSeedNacl = await AwesomeLibrary.nacl(mnemonic, path);
   return formatData(masterSeedNacl)
 }
+
+export async function generateXpubHd(mnemonic: string, chain: string): Promise<String> {
+  const xpub: String = await AwesomeLibrary.xpubHd(mnemonic, chain);
+  return xpub
+}

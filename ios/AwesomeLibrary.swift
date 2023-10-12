@@ -8,6 +8,29 @@ import CommonCrypto
 @objc(AwesomeLibrary)
 class AwesomeLibrary: NSObject {
 
+
+
+  @objc(xpubHd:withB:withResolver:withRejecter:)
+  func xpubHd(mnemonicString: String, chain: String, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
+      
+      var purpose: Purpose  = Purpose.bip44
+      var coinType: CoinType = CoinType.ethereum
+      
+      if(chain=="dogecoin"){
+          purpose = Purpose.bip44
+          coinType = CoinType.dogecoin
+      }
+      if(chain=="bitcoin"){
+          purpose = Purpose.bip84
+          coinType = CoinType.bitcoin
+      }
+      
+      let wallet = HDWallet(mnemonic: mnemonicString, passphrase: "")!
+      let xpub = wallet.getExtendedPublicKey(purpose: purpose, coin: coinType , version: HDVersion.xpub)
+      
+    resolve(xpub)
+  }
+
   @objc(hdkey:withB:withResolver:withRejecter:)
   func hdkey(mnemonicString: String, path: String, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
     let wallet = HDWallet(mnemonic: mnemonicString, passphrase: "")!
@@ -73,4 +96,4 @@ class AwesomeLibrary: NSObject {
             resolve(["",""])
         }
     }
-    }
+}
